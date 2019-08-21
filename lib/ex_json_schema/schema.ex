@@ -4,7 +4,7 @@ defmodule ExJsonSchema.Schema do
   end
 
   defmodule InvalidSchemaError do
-    defexception message: "invalid schema"
+    defexception message: "invalid schema", errors: []
   end
 
   defmodule UndefinedRemoteSchemaResolverError do
@@ -78,7 +78,8 @@ defmodule ExJsonSchema.Schema do
       case Validator.validate(resolve(Draft4.schema()), schema, error_formatter: false) do
         {:error, errors} ->
           raise InvalidSchemaError,
-            message: "schema did not pass validation against its meta-schema: #{inspect(errors)}"
+            message: "schema did not pass validation against its meta-schema: #{inspect(errors)}",
+            errors: errors
 
         _ ->
           nil
